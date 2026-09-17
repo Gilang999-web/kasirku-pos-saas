@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-fraunces: 'Fraunces', Georgia, serif;
+    --font-plus-jakarta-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    background-color: #FBFBFA;
+    color: #0F172A;
+    font-family: var(--font-plus-jakarta-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Accessibility keyboard focus ring (R-32) */
+  :focus-visible {
+    outline: 2px solid #E05338;
+    outline-offset: 2px;
+  }
+}
+
+/* Blueprint Grid Backgrounds according to DESIGN.md Section 3 */
+.bg-grid-blueprint {
+  background-color: #FBFBFA;
+  background-image: 
+    linear-gradient(to right, #E8E8E6 1px, transparent 1px),
+    linear-gradient(to bottom, #E8E8E6 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.bg-grid-blueprint-subtle {
+  background-color: #FBFBFA;
+  background-image: 
+    linear-gradient(to right, rgba(232, 232, 230, 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(232, 232, 230, 0.45) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Print Receipt Styles (DESIGN.md Section 8) */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-receipt, #printable-receipt * {
+    visibility: visible;
+  }
+  #printable-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+    margin: 0;
+    padding: 10px;
+    background: white;
+    color: black !important;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

@@ -1,0 +1,54 @@
+# Dependencies (sangat besar, diunduh via npm install)
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js Build Output & Cache
+/.next/
+/out/
+/build/
+/dist/
+
+# Environment Variables & Secret Keys (Jangan pernah commit kredensial)
+.env
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug & Error Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Settings
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vercel Project Metadata
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+
+# File Temporary
+prd_math_tmp.html
