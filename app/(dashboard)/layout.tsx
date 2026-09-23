@@ -25,7 +25,11 @@ export default function DashboardLayout({
 }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { currentUser } = useAppStore();
+  const { currentUser, initStore } = useAppStore();
+
+  React.useEffect(() => {
+    initStore();
+  }, [initStore]);
 
   const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "cashier"] },

@@ -1,7 +1,14 @@
 export type UserRole = 'admin' | 'cashier';
 
+export interface Store {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
 export interface User {
   id: string;
+  store_id: string;
   name: string;
   email: string;
   role: UserRole;
@@ -12,6 +19,7 @@ export interface User {
 
 export interface Category {
   id: string;
+  store_id: string;
   name: string;
   description: string;
   slug: string;
@@ -19,6 +27,7 @@ export interface Category {
 
 export interface Product {
   id: string;
+  store_id: string;
   name: string;
   sku: string;
   category_id: string;
@@ -43,6 +52,7 @@ export type PaymentMethod = 'cash' | 'qris' | 'transfer';
 
 export interface TransactionItem {
   id: string;
+  store_id: string;
   transaction_id: string;
   product_id: string;
   product_name: string;
@@ -54,6 +64,7 @@ export interface TransactionItem {
 
 export interface Transaction {
   id: string;
+  store_id: string;
   invoice_number: string;
   user_id: string;
   cashier_name: string;
@@ -71,6 +82,7 @@ export interface Transaction {
 
 export interface StockMovement {
   id: string;
+  store_id: string;
   product_id: string;
   product_name: string;
   user_id: string;
@@ -82,6 +94,8 @@ export interface StockMovement {
 }
 
 export interface StoreSettings {
+  id?: string;
+  store_id: string;
   name: string;
   tagline: string;
   address: string;

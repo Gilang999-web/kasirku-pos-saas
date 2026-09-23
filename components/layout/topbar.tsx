@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface TopbarProps {
   onToggleMobileMenu?: () => void;
@@ -21,7 +22,7 @@ interface TopbarProps {
 
 export function Topbar({ onToggleMobileMenu, isMobileMenuOpen }: TopbarProps) {
   const pathname = usePathname();
-  const { settings, currentUser } = useAppStore();
+  const { settings, currentUser, isCloudConnected } = useAppStore();
   const [time, setTime] = useState<string>("");
 
   useEffect(() => {
@@ -55,18 +56,32 @@ export function Topbar({ onToggleMobileMenu, isMobileMenuOpen }: TopbarProps) {
         </button>
 
         <div className="flex items-center gap-2.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-100 animate-pulse shrink-0" />
+          <div
+            className={cn(
+              "w-2.5 h-2.5 rounded-full ring-4 shrink-0 transition-all",
+              isCloudConnected
+                ? "bg-emerald-500 ring-emerald-100 animate-pulse"
+                : "bg-amber-500 ring-amber-100"
+            )}
+          />
           <div>
             <h1 className="text-sm font-bold text-ink-primary font-serif sm:text-base leading-tight">
               {settings.name}
             </h1>
             <div className="flex items-center gap-2 text-[11px] text-slate-500">
               <span className="flex items-center gap-1 font-mono">
-                <Wifi className="w-3 h-3 text-emerald-600" />
-                <span>Online / Sync OK</span>
+                <Wifi
+                  className={cn(
+                    "w-3 h-3",
+                    isCloudConnected ? "text-emerald-600" : "text-amber-600"
+                  )}
+                />
+                <span>{isCloudConnected ? "Supabase Cloud" : "Lokal Mode"}</span>
               </span>
               <span>•</span>
-              <span>Kasir: <strong className="font-semibold text-ink-primary">{currentUser.name}</strong></span>
+              <span>
+                Kasir: <strong className="font-semibold text-ink-primary">{currentUser.name}</strong>
+              </span>
             </div>
           </div>
         </div>

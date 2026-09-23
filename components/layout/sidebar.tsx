@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { 
   LayoutDashboard, 
   Store, 
@@ -12,15 +12,15 @@ import {
   BarChart3, 
   Settings, 
   LogOut,
-  UserCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
-import { initialUsers } from "@/lib/mock-data";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { currentUser, setCurrentUser } = useAppStore();
+  const router = useRouter();
+  const { currentUser } = useAppStore();
 
   const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, roles: ["admin", "cashier"] },
@@ -34,12 +34,11 @@ export function Sidebar() {
 
   const allowedNav = navItems.filter((item) => item.roles.includes(currentUser.role));
 
-  const toggleRole = () => {
-    if (currentUser.role === "admin") {
-      setCurrentUser(initialUsers[1]); // switch to Cashier
-    } else {
-      setCurrentUser(initialUsers[0]); // switch to Admin
-    }
+  const handleLogout = async () => {
+    const supabase = createSupabaseBrowserClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
   };
 
   return (
@@ -101,7 +100,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Role Switcher & User Profile */}
+      {/* User Profile & Logout */}
       <div className="p-3.5 border-t border-slate-100 bg-canvas-light/60 space-y-2">
         <div className="bg-white p-3 rounded-xl border border-slate-200/70 shadow-sm flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
@@ -118,23 +117,13 @@ export function Sidebar() {
           </div>
         </div>
 
-        {/* Quick Demo Switcher for Evaluation */}
         <button
-          onClick={toggleRole}
-          className="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs text-terracotta-700 bg-terracotta-50/70 hover:bg-terracotta-100 border border-terracotta-200/80 rounded-lg transition-colors font-medium"
-          title="Klik untuk simulasi peran Pengguna"
-        >
-          <UserCheck className="w-3.5 h-3.5" />
-          <span>Ganti ke {currentUser.role === "admin" ? "Kasir (Siti)" : "Admin (Budi)"}</span>
-        </button>
-
-        <Link
-          href="/"
-          className="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs text-slate-500 hover:text-ink-primary rounded-lg transition-colors"
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-1.5 py-1.5 text-xs text-red-600 hover:text-white hover:bg-red-500 border border-red-200 hover:border-red-500 rounded-lg transition-all font-medium"
         >
           <LogOut className="w-3.5 h-3.5" />
-          <span>Ke Landing Page</span>
-        </Link>
+          <span>Keluar dari Akun</span>
+        </button>
       </div>
     </aside>
   );
