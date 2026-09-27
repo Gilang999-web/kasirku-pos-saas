@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { transactionSchema } from "@/lib/validations";
 import { generateInvoiceNumber } from "@/lib/utils";
 import { z } from "zod";
+import { writeAuditLog } from "@/lib/audit-log";
 
 export async function POST(request: Request) {
   try {
@@ -109,6 +110,18 @@ export async function POST(request: Request) {
     const { error: moveError } = await supabase.from("stock_movements").insert(stockMovements);
     if (moveError) throw moveError;
 
+    writeAuditLog({
+      action: "transaction.create",
+      entityType: "transaction",
+      entityId: txId,
+      details: {
+        invoice_number: invoiceNumber,
+        total: calculatedTotal,
+        items_count: validatedData.items.length,
+        payment_method: validatedData.payment_method,
+      },
+    });
+
     return NextResponse.json({ 
       success: true, 
       id: txId, 
@@ -118,7 +131,7 @@ export async function POST(request: Request) {
 
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Invalid data", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data", details: error.issues }, { status: 400 });
     }
     console.error("Transaction Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

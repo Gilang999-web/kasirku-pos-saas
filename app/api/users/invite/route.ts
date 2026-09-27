@@ -78,7 +78,7 @@ export async function POST(request: Request) {
 
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Data tidak valid", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Data tidak valid", details: error.issues }, { status: 400 });
     }
     console.error("Invite API Error:", error);
     return NextResponse.json({ error: "Terjadi kesalahan internal" }, { status: 500 });

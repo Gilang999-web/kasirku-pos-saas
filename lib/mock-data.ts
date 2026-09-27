@@ -1,16 +1,17 @@
 import { Category, Product, Transaction, User, StoreSettings } from "./types";
 
 export const initialCategories: Category[] = [
-  { id: "cat-1", name: "Minuman Kopi", slug: "kopi", description: "Varian kopi arabika dan espresso based" },
-  { id: "cat-2", name: "Non-Kopi & Teh", slug: "non-kopi", description: "Minuman teh artisan dan olahan susu" },
-  { id: "cat-3", name: "Makanan Utama", slug: "makanan", description: "Menu makanan berat siap saji" },
-  { id: "cat-4", name: "Snack & Pastry", slug: "snack", description: "Camilan pendamping dan roti panggang" },
+  { id: "cat-1", store_id: "store-1", name: "Minuman Kopi", slug: "kopi", description: "Varian kopi arabika dan espresso based" },
+  { id: "cat-2", store_id: "store-1", name: "Non-Kopi & Teh", slug: "non-kopi", description: "Minuman teh artisan dan olahan susu" },
+  { id: "cat-3", store_id: "store-1", name: "Makanan Utama", slug: "makanan", description: "Menu makanan berat siap saji" },
+  { id: "cat-4", store_id: "store-1", name: "Snack & Pastry", slug: "snack", description: "Camilan pendamping dan roti panggang" },
 ];
 
 export const initialProducts: Product[] = [
   // Minuman Kopi
   {
     id: "prod-1",
+    store_id: "store-1",
     name: "Kopi Susu Gula Aren",
     sku: "KOP-101",
     category_id: "cat-1",
@@ -24,6 +25,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-2",
+    store_id: "store-1",
     name: "Espresso Double Shot",
     sku: "KOP-102",
     category_id: "cat-1",
@@ -37,6 +39,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-3",
+    store_id: "store-1",
     name: "Cold Brew Signature",
     sku: "KOP-103",
     category_id: "cat-1",
@@ -50,6 +53,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-4",
+    store_id: "store-1",
     name: "Caramel Macchiato",
     sku: "KOP-104",
     category_id: "cat-1",
@@ -63,6 +67,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-5",
+    store_id: "store-1",
     name: "Americano Iced",
     sku: "KOP-105",
     category_id: "cat-1",
@@ -76,6 +81,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-6",
+    store_id: "store-1",
     name: "Caffe Latte Hot",
     sku: "KOP-106",
     category_id: "cat-1",
@@ -91,6 +97,7 @@ export const initialProducts: Product[] = [
   // Non-Kopi & Teh
   {
     id: "prod-7",
+    store_id: "store-1",
     name: "Matcha Latte Uji",
     sku: "TEH-201",
     category_id: "cat-2",
@@ -104,6 +111,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-8",
+    store_id: "store-1",
     name: "Earl Grey Milk Tea",
     sku: "TEH-202",
     category_id: "cat-2",
@@ -117,6 +125,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-9",
+    store_id: "store-1",
     name: "Teh Tarik Melati",
     sku: "TEH-203",
     category_id: "cat-2",
@@ -130,6 +139,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-10",
+    store_id: "store-1",
     name: "Chocolate Swiss Artisan",
     sku: "TEH-204",
     category_id: "cat-2",
@@ -143,6 +153,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-11",
+    store_id: "store-1",
     name: "Lemon Lychee Tea",
     sku: "TEH-205",
     category_id: "cat-2",
@@ -158,6 +169,7 @@ export const initialProducts: Product[] = [
   // Makanan Utama
   {
     id: "prod-12",
+    store_id: "store-1",
     name: "Nasi Goreng Kampung Spesial",
     sku: "MAK-301",
     category_id: "cat-3",
@@ -171,6 +183,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-13",
+    store_id: "store-1",
     name: "Mie Ayam Jamur Pangsit",
     sku: "MAK-302",
     category_id: "cat-3",
@@ -184,6 +197,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-14",
+    store_id: "store-1",
     name: "Rice Bowl Ayam Sambal Matah",
     sku: "MAK-303",
     category_id: "cat-3",
@@ -197,6 +211,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-15",
+    store_id: "store-1",
     name: "Rice Bowl Sapi Lada Hitam",
     sku: "MAK-304",
     category_id: "cat-3",
@@ -210,6 +225,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-16",
+    store_id: "store-1",
     name: "Spaghetti Aglio Olio Tuna",
     sku: "MAK-305",
     category_id: "cat-3",
@@ -225,6 +241,7 @@ export const initialProducts: Product[] = [
   // Snack & Pastry
   {
     id: "prod-17",
+    store_id: "store-1",
     name: "Croissant Mentega Perancis",
     sku: "SNK-401",
     category_id: "cat-4",
@@ -238,6 +255,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-18",
+    store_id: "store-1",
     name: "Pain au Chocolat",
     sku: "SNK-402",
     category_id: "cat-4",
@@ -251,6 +269,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-19",
+    store_id: "store-1",
     name: "Roti Bakar Keju Coklat",
     sku: "SNK-403",
     category_id: "cat-4",
@@ -264,6 +283,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-20",
+    store_id: "store-1",
     name: "Singkong Krispi Sambal Roa",
     sku: "SNK-404",
     category_id: "cat-4",
@@ -277,6 +297,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-21",
+    store_id: "store-1",
     name: "Kentang Goreng Truffle Parm",
     sku: "SNK-405",
     category_id: "cat-4",
@@ -290,6 +311,7 @@ export const initialProducts: Product[] = [
   },
   {
     id: "prod-22",
+    store_id: "store-1",
     name: "Pisang Goreng Wijen Madu",
     sku: "SNK-406",
     category_id: "cat-4",
@@ -306,6 +328,7 @@ export const initialProducts: Product[] = [
 export const initialUsers: User[] = [
   {
     id: "usr-admin",
+    store_id: "store-1",
     name: "Budi Santoso",
     email: "admin@kasirku.com",
     role: "admin",
@@ -314,6 +337,7 @@ export const initialUsers: User[] = [
   },
   {
     id: "usr-cashier-1",
+    store_id: "store-1",
     name: "Siti Rahma",
     email: "kasir@kasirku.com",
     role: "cashier",
@@ -323,6 +347,7 @@ export const initialUsers: User[] = [
 ];
 
 export const initialSettings: StoreSettings = {
+  store_id: "store-1",
   name: "Kopi & Roti Nusantara",
   tagline: "Sajian Tradisi Rasa Masa Kini",
   address: "Jl. Veteran No. 45, Kebayoran Baru, Jakarta Selatan",
@@ -377,6 +402,7 @@ export function generateInitialTransactions(): Transaction[] {
 
         items.push({
           id: `item-${counter}-${j}`,
+          store_id: "store-1",
           transaction_id: `tx-${counter}`,
           product_id: prod.id,
           product_name: prod.name,
@@ -398,6 +424,7 @@ export function generateInitialTransactions(): Transaction[] {
 
       transactions.push({
         id: `tx-${counter}`,
+        store_id: "store-1",
         invoice_number: invoiceNumber,
         user_id: cashier.id,
         cashier_name: cashier.name,

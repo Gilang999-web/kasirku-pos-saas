@@ -252,3 +252,29 @@ BEGIN
 END;
 $$;
 
+-- ==============================================================================
+-- TABEL 8: AUDIT_LOGS (Catatan Aktivitas Penting)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    store_id UUID NOT NULL REFERENCES public.stores(id) ON DELETE CASCADE,
+    user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    user_email TEXT,
+    action TEXT NOT NULL,
+    entity_type TEXT NOT NULL,
+    entity_id TEXT,
+    details JSONB,
+    ip_address TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT TIMEZONE('utc'::text, NOW())
+);
+
+CREATE INDEX IF NOT EXISTS idx_audit_logs_store_created 
+    ON public.audit_logs(store_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action 
+    ON public.audit_logs(store_id, action);
+
+ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Tenant isolation for audit_logs" ON public.audit_logs
+FOR ALL USING (store_id = get_auth_store_id());
+

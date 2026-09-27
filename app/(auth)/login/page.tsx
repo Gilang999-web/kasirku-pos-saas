@@ -42,6 +42,11 @@ export default function LoginPage() {
 
     if (data.session) {
       toast("Berhasil masuk! Mengalihkan ke dashboard…", "success");
+      fetch("/api/auth/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "login" }),
+      }).catch(() => {});
       router.push("/dashboard");
       router.refresh();
     }

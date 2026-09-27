@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { productSchema } from "@/lib/validations";
 import { z } from "zod";
+import { writeAuditLog } from "@/lib/audit-log";
 
 export async function POST(request: Request) {
   try {
@@ -43,11 +44,18 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
+    writeAuditLog({
+      action: "product.create",
+      entityType: "product",
+      entityId: productId,
+      details: { name: validatedData.name, sku: validatedData.sku },
+    });
+
     return NextResponse.json({ success: true, id: productId });
   } catch (error) {
     console.error("API Error [POST /api/products]:", error);
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Invalid data", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data", details: error.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
@@ -78,10 +86,17 @@ export async function PUT(request: Request) {
 
     if (error) throw error;
 
+    writeAuditLog({
+      action: "product.update",
+      entityType: "product",
+      entityId: id,
+      details: { updatedFields: Object.keys(validatedData) },
+    });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Invalid data", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data", details: error.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
@@ -107,6 +122,12 @@ export async function DELETE(request: Request) {
       // RLS handles store_id isolation automatically
 
     if (error) throw error;
+
+    writeAuditLog({
+      action: "product.delete",
+      entityType: "product",
+      entityId: id,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

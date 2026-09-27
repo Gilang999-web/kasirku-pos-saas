@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { categorySchema } from "@/lib/validations";
 import { z } from "zod";
+import { writeAuditLog } from "@/lib/audit-log";
 
 export async function POST(request: Request) {
   try {
@@ -37,10 +38,17 @@ export async function POST(request: Request) {
 
     if (error) throw error;
 
+    writeAuditLog({
+      action: "category.create",
+      entityType: "category",
+      entityId: categoryId,
+      details: { name: validatedData.name },
+    });
+
     return NextResponse.json({ success: true, id: categoryId });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Invalid data", details: error.errors }, { status: 400 });
+      return NextResponse.json({ error: "Invalid data", details: error.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
@@ -65,6 +73,12 @@ export async function DELETE(request: Request) {
       .eq("id", id);
 
     if (error) throw error;
+
+    writeAuditLog({
+      action: "category.delete",
+      entityType: "category",
+      entityId: id,
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

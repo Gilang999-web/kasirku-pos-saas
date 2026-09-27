@@ -9,7 +9,9 @@ import {
   Package, 
   AlertTriangle,
   CheckCircle2,
-  Filter
+  Filter,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
 import { Product } from "@/lib/types";
@@ -26,6 +28,8 @@ export default function ProductsPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 20;
 
   // Modal states
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -55,6 +59,14 @@ export default function ProductsPage() {
       return matchCat && matchSearch;
     });
   }, [products, selectedCategory, searchQuery]);
+
+  // Pagination logic
+  const totalCount = filteredProducts.length;
+  const totalPages = Math.ceil(totalCount / limit);
+  const paginatedProducts = useMemo(() => {
+    const start = (currentPage - 1) * limit;
+    return filteredProducts.slice(start, start + limit);
+  }, [filteredProducts, currentPage]);
 
   const openAddModal = () => {
     setEditingProduct(null);
@@ -152,7 +164,10 @@ export default function ProductsPage() {
             type="text"
             placeholder="Cari berdasarkan nama atau SKU..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1); // Reset page on search
+            }}
             className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-ink-primary placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-terracotta-500"
           />
         </div>
@@ -161,7 +176,10 @@ export default function ProductsPage() {
           <Filter className="w-4 h-4 text-slate-400" />
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => {
+              setSelectedCategory(e.target.value);
+              setCurrentPage(1); // Reset page on filter
+            }}
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-ink-primary focus:outline-none focus:ring-2 focus:ring-terracotta-500 w-full sm:w-auto"
           >
             <option value="all">Semua Kategori</option>
@@ -190,14 +208,14 @@ export default function ProductsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {filteredProducts.length === 0 ? (
+              {paginatedProducts.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-slate-400">
                     Tidak ada produk yang ditemukan.
                   </td>
                 </tr>
               ) : (
-                filteredProducts.map((p) => {
+                paginatedProducts.map((p) => {
                   const isLowStock = p.stock_qty <= p.min_stock;
                   const margin = p.sell_price - p.buy_price;
 
@@ -273,6 +291,36 @@ export default function ProductsPage() {
             </tbody>
           </table>
         </div>
+        
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200">
+            <p className="text-sm text-slate-500">
+              Menampilkan {Math.min((currentPage - 1) * limit + 1, totalCount)} hingga {Math.min(currentPage * limit, totalCount)} dari {totalCount} produk
+            </p>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Sebelumnya
+              </Button>
+              <span className="text-sm font-medium px-4">Halaman {currentPage} dari {totalPages}</span>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Selanjutnya
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ADD / EDIT PRODUCT MODAL */}
